@@ -23,6 +23,6 @@ At this moment, the Pusher Client contains an error. You have to change the code
 to
 
     if(channel_data)
-        stringToSign = "" + this.state.socket_id + ":" + channel_name + ":" + (JSON.stringify(channel_data));
+      stringToSign = "" + this.state.socket_id + ":" + channel_name + ":" + (JSON.stringify(channel_data));
     else
-        stringToSign = "" + this.state.socket_id + ":" + channel_name;
+      stringToSign = "" + this.state.socket_id + ":" + channel_name;

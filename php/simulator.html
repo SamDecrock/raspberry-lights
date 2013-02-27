@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simulator</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://js.pusher.com/1.12/pusher.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="reset.css" />
+	<style type="text/css">
+		html, body{
+			width: 100%;
+			height: 100%;
+		}
+
+		body{
+			font-size: 44px;
+			font-family: Arial,Helvetica,Garuda,sans-serif;
+			text-align: center;
+		}
+
+		.lightbox{
+			background-color: #FFFFFF;
+			width: 50%;
+			height: 100%;
+		}
+
+		#light0{
+			float: left;
+		}
+
+		#light1{
+			float: right;
+		}
+
+	</style>
+
+
+	<script type="text/javascript">
+		$(function(){
+			Pusher.channel_auth_endpoint = 'auth.php';
+			var pusher = new Pusher('YOUR_PUSHER_KEY');
+			var channel = pusher.subscribe('private-lightswitch');
+
+			channel.bind('client-lighton', function(data) {
+				$("#light0").css("background-color", "#8F0000");
+				$("#light1").css("background-color", "#8F0000");
+			});
+
+			channel.bind('client-lightoff', function(data) {
+				$("#light0").css("background-color", "#FFFFFF");
+				$("#light1").css("background-color", "#FFFFFF");
+			});
+
+
+
+			channel.bind('client-lighton0', function(data) {
+				$("#light0").css("background-color", "#8F0000");
+			});
+
+			channel.bind('client-lightoff0', function(data) {
+				$("#light0").css("background-color", "#FFFFFF");
+			});
+
+
+
+			channel.bind('client-lighton1', function(data) {
+				$("#light1").css("background-color", "#8F0000");
+			});
+
+			channel.bind('client-lightoff1', function(data) {
+				$("#light1").css("background-color", "#FFFFFF");
+			});
+
+		});
+	</script>
+</head>
+
+<body>
+
+	<div id="light0" class="lightbox"></div>
+	<div id="light1" class="lightbox"></div>
+
+</body>
+
+</html>

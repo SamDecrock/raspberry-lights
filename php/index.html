@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Scheire en de Schepping: Turn on the lights!</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="reset.css" />
+	<style type="text/css">
+		html, body{
+			width: 100%;
+			height: 100%;
+		}
+
+		body{
+			font-size: 40px;
+			font-family: Arial,Helvetica,Garuda,sans-serif;
+			text-align: center;
+		}
+
+		h4{
+			font-weight: bold;
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		#wrapper{
+			width: 604px;
+			height: 300px;
+			margin: 0 auto;
+		}
+
+		.lightbox{
+			background-color: #E0E0F0;
+			width: 300px;
+			height: 300px;
+			float: left;
+		}
+
+		#light0{
+			margin-right: 2px;
+		}
+
+		#light1{
+			margin-left: 2px;
+		}
+
+		#info{
+			font-size: 14px;
+			width: 604px;
+			margin: 0 auto;
+			text-align: left;
+		}
+
+		b{
+			font-weight: bold;
+		}
+
+	</style>
+
+	<script type="text/javascript">
+		$(function(){
+			var state;
+			var stateLight0;
+			var stateLight1;
+
+
+			function allDown(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(state != 'keydown'){
+					state = 'keydown';
+					lighton();
+				}
+			}
+
+			function allUp(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(state != 'keyup'){
+					state = 'keyup';
+					lightoff();
+				}
+			}
+
+			$(document).mousedown(allDown);
+			$(document).mouseup(allUp);
+			$(document).bind('touchstart', allDown);
+			$(document).bind('touchend', allUp);
+
+			function ligth0Down(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(stateLight0 != 'keydown'){
+					stateLight0 = 'keydown';
+					light0on();
+				}
+			}
+
+			function ligth0Up(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(stateLight0 != 'keyup'){
+					stateLight0 = 'keyup';
+					light0off();
+				}
+			}
+
+			$("#light0").mousedown(ligth0Down);
+			$("#light0").mouseup(ligth0Up);
+			$("#light0").bind('touchstart', ligth0Down);
+			$("#light0").bind('touchend', ligth0Up);
+
+			function ligth1Down(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(stateLight1 != 'keydown'){
+					stateLight1 = 'keydown';
+					light1on();
+				}
+			}
+
+			function ligth1Up(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(stateLight1 != 'keyup'){
+					stateLight1 = 'keyup';
+					light1off();
+				}
+			}
+
+			$("#light1").mousedown(ligth1Down);
+			$("#light1").mouseup(ligth1Up);
+			$("#light1").bind('touchstart', ligth1Down);
+			$("#light1").bind('touchend', ligth1Up);
+
+
+			// keyboard events:
+			$(document).keydown(function (event){
+				if (event.keyCode == 37) {
+					//left
+					ligth0Down(event);
+				}else if(event.keyCode == 39) {
+					//right
+					ligth1Down(event);
+				}else{
+					allDown(event);
+				}
+			});
+
+			$(document).keyup(function (event){
+				if (event.keyCode == 37) {
+					//left
+					ligth0Up(event);
+				}else if(event.keyCode == 39) {
+					//right
+					ligth1Up(event);
+				}else{
+					allUp(event);
+				}
+			});
+
+
+
+
+			function lighton(){
+				$.getJSON('simpleapi.php', {event: 'on', light: 'all'});
+				visualizeLight0on();
+				visualizeLight1on();
+			}
+
+			function lightoff(){
+				$.getJSON('simpleapi.php', {event: 'off', light: 'all'});
+				visualizeLight0off();
+				visualizeLight1off();
+			}
+
+
+			function light0on(){
+				//console.log("light0 on");
+				$.getJSON('simpleapi.php', {event: 'on', light: 'light0'});
+				visualizeLight0on();
+			}
+
+			function light1on(){
+				//console.log("light1 on");
+				$.getJSON('simpleapi.php', {event: 'on', light: 'light1'});
+				visualizeLight1on();
+			}
+
+			function light0off(){
+				//console.log("light0 off");
+				$.getJSON('simpleapi.php', {event: 'off', light: 'light0'});
+				visualizeLight0off();
+			}
+
+			function light1off(){
+				//console.log("light1 off");
+				$.getJSON('simpleapi.php', {event: 'off', light: 'light1'});
+				visualizeLight1off();
+			}
+
+
+
+			// UI stuff:
+
+			function visualizeLight0on(){
+				$("#light0").css('background-color', '#8F0000');
+			}
+
+			function visualizeLight1on(){
+				$("#light1").css('background-color', '#8F0000');
+			}
+
+			function visualizeLight0off(){
+				$("#light0").css('background-color', '#E0E0F0');
+			}
+
+			function visualizeLight1off(){
+				$("#light1").css('background-color', '#E0E0F0');
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<h1>Hit the keyboard or mouse</h1>
+	<h4>Scheire en de Schepping</h4>
+	<div id="wrapper">
+		<div id="light0" class="lightbox"></div>
+		<div id="light1" class="lightbox"></div>
+	</div>
+	<div id="info">
+		<br />
+		<b>Keyboard:</b> Use the left/right keyboard arrows for each light. Any other button for both.<br />
+		<b>Mouse:</b> Click the boxes above for each light. Click anywhere else for both.
+	</div>
+</body>
+
+</html>
